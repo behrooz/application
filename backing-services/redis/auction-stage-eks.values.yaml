@@ -1,0 +1,34 @@
+global:
+  redis:
+    password: "Auction12"
+
+auth:    
+  service:   
+    type: ClusterIP
+
+  enabled: true  
+  sentinel: true    
+  password: "Auction12"
+
+architecture: standalone
+
+master:
+  serviceAccount:  
+    create: true    
+    name: "redisserviceaccount"
+    automountServiceAccountToken: true    
+    annotations:
+      eks.amazonaws.com/role-arn: "arn:aws:iam::667294666490:role/auction-cluster-20241126163757775000000001"
+
+# replica:
+#   serviceAccount:    
+#     create: true
+#     name: "redisservcieaccount"
+#     automountServiceAccountToken: true    
+#     annotations: {}
+
+#   persistence:
+#     enabled: true
+#     path: /data    
+#     storageClass: "efs-sc"  
+#     size: 2Gi  

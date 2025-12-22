@@ -1,0 +1,97 @@
+---
+# Open Source LINSTOR (Piraeus) Values File
+# No credentials required - uses public images from quay.io
+
+replicaCount: 1
+installCRDs: true
+
+operator:
+  image:
+    # NOTE: Open source operator image is NOT publicly available
+    # You must either:
+    # 1. Build from source: https://github.com/piraeusdatastore/piraeus-operator
+    #    OR: https://github.com/LINBIT/linstor-operator-builder
+    # 2. Use your own registry where you've pushed the built image
+    # 3. Use commercial drbd.io/linstor-operator with credentials
+    repository: YOUR_REGISTRY/piraeus-operator  # Replace with your registry
+    pullPolicy: IfNotPresent
+    tag: "v2.10.3"  # Use specific version
+  securityContext:
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1000
+
+  options:
+    leaderElect: true
+
+  resources: {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+webhook:
+  timeoutSeconds: 2
+  failurePolicy: Fail
+
+tls:
+  certificateSecret: ""
+  autogenerate: true
+  renew: false
+  certManagerIssuerRef: {}
+
+# Remove or comment out imageCredentials - not needed for open source
+# imageCredentials:
+#   registry: drbd.io
+#   username: changeme
+#   password: changeme
+#   email: changeme@example.com
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+rbac:
+  create: true
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  runAsNonRoot: true
+
+nodeSelector: {}
+
+tolerations:
+  - key: drbd.linbit.com/lost-quorum
+    effect: NoSchedule
+  - key: drbd.linbit.com/force-io-error
+    effect: NoSchedule
+
+affinity: {}
+
+podDisruptionBudget: {}
+
+# Image overrides for open source components (used by linbit-sds chart)
+# These images ARE available on Docker Hub (piraeus namespace)
+imageConfigOverride:
+  - base: piraeus  # Docker Hub namespace
+    components:
+      linstor-controller:
+        image: piraeus-server  # Available on Docker Hub
+      linstor-satellite:
+        image: piraeus-server  # Same image for both
+      linstor-csi:
+        image: linstor-csi  # Available on Docker Hub
+      # Note: drbd-reactor may not be available as open source
+      # You may need to build it or use commercial version
+

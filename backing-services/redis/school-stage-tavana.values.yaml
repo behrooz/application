@@ -1,0 +1,33 @@
+global:
+  redis:
+    password: "secret123"
+
+image:
+  registry: 172.16.16.1:30516
+  repository: bitnami/redis
+  tag: 7.2.4-debian-11-r0
+  
+auth:    
+  service:   
+    type: ClusterIP
+  enabled: true  
+  sentinel: true    
+  password: "secret123"
+
+architecture: standalone
+
+# replica:
+#   serviceAccount:    
+#     create: true
+#     name: "redisservcieaccount"
+#     automountServiceAccountToken: true    
+#     annotations: {}
+
+#   persistence:
+#     enabled: true
+#     path: /data    
+#     storageClass: "efs-sc"  
+#     size: 2Gi  
+
+nodeSelector:
+  node.name: node-01

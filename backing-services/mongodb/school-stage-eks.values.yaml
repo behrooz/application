@@ -1,0 +1,61 @@
+global:  
+  storageClass: "efs-sc"
+
+# persistence:
+#   enabled: true
+#   storageClass: "efs-sc"
+
+livenessProbe:
+  enabled: true
+  initialDelaySeconds: 60
+  periodSeconds: 15
+  timeoutSeconds: 10
+  failureThreshold: 20
+readinessProbe:
+  enabled: true
+  initialDelaySeconds: 60
+  periodSeconds: 15
+  timeoutSeconds: 10
+  failureThreshold: 20
+persistence:
+  enabled: true
+  storageClass: efs-sc
+  accessModes:
+    - ReadWriteOnce
+  size: 100M  
+
+backup:
+  cronjob:
+    storage:
+      storageClass: "efs-sc"    
+
+hidden:
+  persistence:
+    storageClass: "efs-sc"
+
+auth:
+  enabled: true  
+  rootUser: root  
+  rootPassword: "secret123"
+
+serviceAccount:
+  create: true  
+  name: "mongodbservcieaccount"    
+  annotations:
+    eks.amazonaws.com/role-arn: "arn:aws:iam::889565812003:role/schoolbuses-cluster-20241110104436981500000002"  
+
+service:  
+  nameOverride: ""  
+  type: LoadBalancer
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    service.beta.kubernetes.io/aws-load-balancer-type: external
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: instance  
+
+securityContext:
+  fsGroup: 1001
+
+
+volumePermissions:
+  enabled: true

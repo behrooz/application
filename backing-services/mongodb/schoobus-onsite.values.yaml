@@ -1,0 +1,11 @@
+auth:
+  enabled: true  
+  rootUser: root  
+  rootPassword: "secret123"
+
+serviceAccount:  
+  create: false
+
+service:  
+  nameOverride: ""  
+  type: NodePort

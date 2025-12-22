@@ -1,0 +1,22 @@
+global:
+  imageRegistry: ""
+  imagePullSecrets: []
+  storageClass: ""
+
+auth:
+  rootPassword: "secret123"
+  createDatabase: true
+  database: "my_database"
+  username: "admin"
+  password: "secret123"
+  replicationUser: replicator
+  replicationPassword: ""
+  existingSecret: ""
+  usePasswordFiles: false
+  customPasswordFiles: {}
+  defaultAuthenticationPlugin: ""  
+
+primary:
+  service:
+    nodePorts:
+      mysql: 30307

@@ -1,0 +1,23 @@
+image:
+  registry: 172.16.16.1:30516
+  repository: bitnami/mysql
+  tag: 8.0.35-debian-11-r2  
+  pullPolicy: IfNotPresent
+
+global:
+  imageRegistry: ""
+  imagePullSecrets: []
+  storageClass: ""
+
+auth:
+  rootPassword: "secret123"
+  createDatabase: true
+  database: "my_database"
+  username: "admin"
+  password: "secret123"
+  replicationUser: replicator
+  replicationPassword: ""
+  existingSecret: ""
+  usePasswordFiles: false
+  customPasswordFiles: {}
+  defaultAuthenticationPlugin: ""  

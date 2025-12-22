@@ -1,0 +1,11 @@
+auth:
+  username: admin
+  password: "admin"
+  securePassword: true
+  existingPasswordSecret: ""
+
+serviceAccount:  
+  create: false
+
+service:  
+  type: LoadBalancer

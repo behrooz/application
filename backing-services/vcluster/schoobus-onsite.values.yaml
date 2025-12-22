@@ -1,0 +1,6 @@
+controlPlane:
+ advanced:
+   defaultImageRegistry: 45.159.150.146:4158
+ distro:
+   k8s:
+     version: v1.31.1

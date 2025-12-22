@@ -1,0 +1,37 @@
+image:
+  registry: localhost:30516
+  repository: bitnami/mongodb
+  tag: latest
+
+replicaCount: 1
+
+metrics:  
+  enabled: false  
+  image:
+    registry: localhost:30516
+    repository: bitnami/mongodb-exporter
+    tag: latest
+    pullPolicy: IfNotPresent
+
+auth:
+  enabled: true  
+  rootUser: root  
+  rootPassword: "secret123"
+
+serviceAccount:  
+  create: false
+
+service:  
+  nameOverride: ""  
+  type: NodePort
+
+nodeSelector:
+  node.name: node-1
+
+resources:
+  requests:
+    cpu: 1000m
+    memory: 1G
+  limits:
+    cpu: 1000m
+    memory: 1G  

@@ -1,0 +1,29 @@
+image:
+  repository: 172.16.16.1:30516/external-secrets/external-secrets
+  pullPolicy: IfNotPresent  
+  tag: "v0.9.20"
+
+certController:
+  image:
+    repository: 172.16.16.1:30516/external-secrets/external-secrets
+    pullPolicy: IfNotPresent  
+    tag: "v0.9.20"
+
+webhook:
+  image:
+    repository: 172.16.16.1:30516/external-secrets/external-secrets
+    pullPolicy: IfNotPresent  
+    tag: "v0.9.20"
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 300Mi
+  limits:
+    cpu: 200m
+    memory: 300Mi    
+
+global:
+  nodeSelector: 
+    node.name: node-01
+  tolerations: []

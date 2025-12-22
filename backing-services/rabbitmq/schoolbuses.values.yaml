@@ -1,0 +1,20 @@
+global:
+  storageClass: "efs-sc"
+
+auth:
+  username: admin
+  password: "admin"
+  securePassword: true
+  existingPasswordSecret: ""
+
+serviceAccount:  
+  create: true
+  name: "rabbitmqservcieaccount"
+  namespace: "default"
+  awsRoleArn: "arn:aws:iam::889565812003:role/schoolbuses_Cluster_IAM"
+  owner: "schoolbuses"
+  automountServiceAccountToken: true  
+  annotations: {}    
+
+service:  
+  type: LoadBalancer  

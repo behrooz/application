@@ -1,0 +1,14 @@
+replicaCount: 2
+
+clusterName: auction
+
+# cluster contains configurations specific to the kubernetes cluster
+cluster:
+  # Cluster DNS domain (required for requesting TLS certificates)
+  dnsDomain: auction.dev
+
+serviceAccount:
+  name: aws-load-balancer-aws-load-balancer-controller
+  create: true
+  annotations:    
+    eks.amazonaws.com/role-arn: "arn:aws:iam::667294666490:role/auction-cluster-20241126163757775000000001"

@@ -1,0 +1,44 @@
+Execute the following to get the administrator credentials:
+
+  echo Username: sa
+  MSSQL_SA_PASSWORD=$(kubectl -n {{ include "common.names.namespace" . }} get secret {{ template "mssql.secretName" . }} -o jsonpath="{.data.mssql-root-password}" | base64 -d)
+
+
+To connect to your database:
+
+  1. Run a pod that you can use as a client:
+
+      kubectl -n {{ include "common.names.namespace" . }} run {{ include "common.names.fullname" . }}-client --rm --tty -i --restart='Never' --image  {{ template "mssql.client.image" . }} --env MSSQL_SA_PASSWORD=$MSSQL_SA_PASSWORD --command -- bash
+
+  2. To connect to primary service (read/write):
+
+      sqlcmd -C -S {{ include "mssql.primary.fullname" . }}.{{ include "common.names.namespace" . }}.svc.{{ .Values.clusterDomain }} -U sa -P "$MSSQL_SA_PASSWORD"
+
+{{- if eq .Values.architecture "replication" }}
+
+  3. To connect to secondary service (read-only):
+
+      sqlcmd -C -S {{ include "mssql.secondary.fullname" . }}.{{ include "common.names.namespace" . }}.svc.{{ .Values.clusterDomain }} -U sa -P "$MSSQL_SA_PASSWORD"
+
+{{- end }}
+
+
+{{- if not .Values.backup.persistence.enabled }}
+#################################################################################
+######   WARNING: Persistence is disabled for BACKUPs !!!                    #####
+######  !!! You will lose your  backups when                                #####
+######            the primary pod is terminated.                            #####
+########   Check @param backup.persistence.enabled to metigate this      ########
+#################################################################################
+{{- end }}
+
+
+#################################################################################
+#######################        DISCLAIMER        ################################
+#################################################################################
+BY DEPLOYING THIS HELM CHART, YOU ARE ACCEPTING THE END-USER Licensing Agreement
+  of Microsoft SQL Server:
+     https://go.microsoft.com/fwlink/?LinkId=746388
+IF YOU ARE NOT ACCEPTING THAT LICENSE, YOU MUST DELETE THIS RELEASE IMMEDIATELY:
+    # helm -n {{ .Release.Namespace }} delete {{ .Release.Name }}
+#################################################################################

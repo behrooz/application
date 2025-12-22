@@ -1,0 +1,8 @@
+global:
+  imageRegistry: "192.168.2.43:31898"
+  security:    
+    allowInsecureImages: true
+
+auth:  
+  rootUser: admin  
+  rootPassword: "Tavana123"

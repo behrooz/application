@@ -1,0 +1,22 @@
+service:
+  type: LoadBalancer
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    service.beta.kubernetes.io/aws-load-balancer-type: external
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: instance
+
+jenkinsPassword: "Tavana123$"
+
+persistence:  
+  enabled: true  
+  storageClass: "efs-sc"
+
+serviceAccount:
+  create: true  
+  name: "jenkinsservcieaccount"    
+  annotations:
+    eks.amazonaws.com/role-arn: "arn:aws:iam::889565812003:role/schoolbuses-cluster-20241110104436981500000002"
+
+agent:  
+  enabled: true

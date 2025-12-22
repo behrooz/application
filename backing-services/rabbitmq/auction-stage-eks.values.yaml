@@ -1,0 +1,23 @@
+auth:
+  username: admin
+  password: "admin"
+  securePassword: true
+  existingPasswordSecret: ""
+
+serviceAccount:  
+  create: false
+  name: ""
+  namespace: "default"
+  awsRoleArn: ""
+  owner: ""
+  automountServiceAccountToken: true  
+  annotations: {} 
+
+service:  
+  nameOverride: ""  
+  type: LoadBalancer
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    service.beta.kubernetes.io/aws-load-balancer-type: external
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: instance  

@@ -1,0 +1,29 @@
+replicaCount: 3
+
+service:
+  type: LoadBalancer
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    service.beta.kubernetes.io/aws-load-balancer-type: external
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: instance
+
+resources: 
+  limits:
+    cpu: 1000m
+    memory: 512Mi
+  requests:
+    cpu: 1000m
+    memory: 512Mi
+
+persistence:
+  enabled: true
+  size: 20Mi
+  storageClassName: "efs-sc"
+  accessMode: ReadWriteOnce
+
+serviceAccount:  
+  create: true  
+  name: "emqxservcieaccount"    
+  annotations:
+    eks.amazonaws.com/role-arn: "arn:aws:iam::889565812003:role/schoolbuses-cluster-20241110104436981500000002"

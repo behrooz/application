@@ -1,0 +1,41 @@
+global:
+  imageRegistry: ""
+  imagePullSecrets: []
+  storageClass: ""
+
+architecture: standalone #replication
+clusterDomain: mysql-school-stage-headless
+
+auth:
+  rootPassword: "secret123"
+  createDatabase: true
+  database: "my_database"
+  username: "admin"
+  password: "secret123"
+  replicationUser: replicator
+  replicationPassword: "secret123"
+  existingSecret: ""
+  usePasswordFiles: false
+  customPasswordFiles: {}
+  defaultAuthenticationPlugin: ""  
+
+replication:
+  enabled: false
+  replicaCount: 1
+
+primary:
+  service:
+    nodePorts:
+      mysql: 30336
+  resources: 
+    limits:
+      cpu: 1000m
+      memory: 1G
+    requests:
+      cpu: 1000m
+      memory: 1G
+
+secondary:
+  service:
+    nodePorts:
+      mysql: 30337

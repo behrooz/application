@@ -1,0 +1,15 @@
+image:
+  registry: 45.159.150.146:4158
+  repository: razzaghib/sqlserver
+  tag: latest
+auth:  
+  rootPassword: "Secret@123"  
+  createDatabase: true  
+  database: "database"  
+  databaseCollate: Latin1_General_CI_AS
+  username: "sa"
+  password: "Secret@123"
+
+primary:
+  service:
+    type: NodePort

@@ -1,0 +1,115 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "osrm.fullname" . }}
+  labels:
+{{ include "osrm.labels" . | indent 4 }}
+spec:
+  serviceName: {{ include "osrm.fullname" . }}-headless
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "osrm.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "osrm.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      initContainers:
+      {{- with .Values.initContainersTpl }}
+      {{- ( tpl . $ ) | nindent 8 }}
+      {{- end }}
+      {{- with .Values.initContainers }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if and .Values.map.enabled ( eq "http" .Values.map.source ) }}
+      {{- ( tpl .Values.map.http.initContainersTpl $ ) | nindent 8 }}
+      {{- end }}
+      {{- if and .Values.map.enabled ( eq "gcs" .Values.map.source ) }}
+      {{- ( tpl .Values.map.gcs.initContainersTpl $ ) | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - osrm-routed
+            - --algorithm
+            - mld
+            {{- if and .Values.map.enabled ( eq "http" .Values.map.source ) }}
+            - /data/maps/{{ .Values.map.http.version | default "unversioned" }}/map.osrm
+            {{- end }}
+            {{- if and .Values.map.enabled ( eq "gcs" .Values.map.source ) }}
+            - /data/maps/{{ .Values.map.gcs.version | default "unversioned" }}/map.osrm
+            {{- end }}
+            {{- if .Values.extraArgs }}
+            {{- toYaml .Values.extraArgs | nindent 12 }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: 5000
+              protocol: TCP
+          {{- with .Values.livenessProbe }}
+          livenessProbe: {{ toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe: {{ toYaml . | nindent 12 }}
+          {{- end }}
+          resources: {{ toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: maps
+              mountPath: /data/maps
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      volumes:
+        - name: config-files
+          configMap:
+            name: {{ include "osrm.fullname" . }}-files
+            defaultMode: 0755
+      {{- if not .Values.persistence.enabled }}
+        - name: maps
+          emptyDir: {}
+      {{- end }}
+      {{- with .Values.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.extraVolumesTpl }}
+        {{- ( tpl . $ ) | nindent 8 }}
+      {{- end }}
+      {{- if and .Values.map.enabled ( eq "gcs" .Values.map.source ) }}
+        {{- ( tpl .Values.map.gcs.extraVolumesTpl $ ) | nindent 8 }}
+      {{- end }}
+  {{- if .Values.persistence.enabled }}
+  volumeClaimTemplates:
+    - metadata:
+        name: maps
+      spec:
+        accessModes:
+          {{- toYaml .Values.persistence.accessModes | nindent 10 }}
+        {{- if .Values.persistence.storageClassName }}
+        {{- if (eq "-" .Values.persistence.storageClassName) }}
+        storageClassName: ""
+        {{- else }}
+        storageClassName: {{ .Values.persistence.storageClassName }}
+        {{- end }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.size | quote }}
+  {{- end }}

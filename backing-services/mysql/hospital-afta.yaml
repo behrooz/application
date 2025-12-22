@@ -1,0 +1,30 @@
+image:
+  registry: docker.io
+  repository: bitnami/mysql
+  tag: 8.0.35-debian-11-r2  
+  pullPolicy: IfNotPresent
+
+global:
+  imageRegistry: ""
+  imagePullSecrets: []
+  storageClass: ""
+  resources:  
+    limits:
+      cpu: 1000m
+      memory: 512Mi
+    requests:
+      cpu: 1000m
+      memory: 512Mi
+    
+auth:
+  rootPassword: "secret123"
+  createDatabase: true
+  database: "my_database"
+  username: "admin"
+  password: "secret123"
+  replicationUser: replicator
+  replicationPassword: ""
+  existingSecret: ""
+  usePasswordFiles: false
+  customPasswordFiles: {}
+  defaultAuthenticationPlugin: ""  

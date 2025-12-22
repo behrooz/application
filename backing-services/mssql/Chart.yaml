@@ -1,0 +1,40 @@
+annotations:
+  artifacthub.io/category: database
+  artifacthub.io/maintainers: |
+    - name: Björn Dieding
+      email: bjoern@xrow.de
+  artifacthub.io/operator: "false"
+  artifacthub.io/signKey: |
+    fingerprint: "U/A3w781aiA3oGnsr34dEKhn/EGNJN37WpmGKsHU0MY"
+    url: https://gitlab.com/xrow.keys
+apiVersion: v2
+appVersion: 2022-CU14-GDR1-rhel-9.1
+dependencies:
+- name: common
+  repository: https://charts.bitnami.com/bitnami
+  tags:
+  - bitnami-common
+  version: 2.x.x
+description: 'Microsoft SQL Server is a DBMS used by many organizations. Ease Migrating
+  your SQL Servers to Cloud Native by leveraging this Helm chart. '
+home: https://gitlab.com/xrow-public/helm-mssql
+icon: https://upload.wikimedia.org/wikipedia/de/8/8c/Microsoft_SQL_Server_Logo.svg
+keywords:
+- mssql
+- microsoftsql
+- database
+- dbms
+- sql
+- cluster
+- high availability
+maintainers:
+- name: Björn Dieding
+  url: https://www.xrow.de
+- name: xrow GmbH
+  url: https://www.xrow.de
+name: mssql
+sources:
+- https://gitlab.com/xrow-public/helm-mssql
+- https://github.com/Microsoft/mssql-docker
+- https://hub.docker.com/_/microsoft-mssql-server
+version: 1.1.3

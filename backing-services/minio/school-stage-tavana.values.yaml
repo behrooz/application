@@ -1,0 +1,21 @@
+global:
+  imageRegistry: "172.16.16.1:30516"
+  security:    
+    allowInsecureImages: true
+
+clientImage:
+  repository: bitnami/minio-client
+  tag: 2025.2.15-debian-12-r0
+
+image:
+  repository: bitnami/minio
+  tag: 2025.2.18-debian-12-r0
+
+auth:
+  rootUser: admin  
+  rootPassword: "Tavana123"
+
+livenessProbe:
+  enabled: false
+readinessProbe:
+  enabled: false

@@ -1,0 +1,12 @@
+controller:
+  name: controller
+  enableAnnotationValidations: false
+  image:
+    ## Keep false as default for now!
+    chroot: false
+    registry: 172.16.16.1:30516
+    image: ingress-nginx/controller
+
+service:    
+  ports:
+    mongodb: 27018

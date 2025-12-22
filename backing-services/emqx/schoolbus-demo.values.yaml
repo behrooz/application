@@ -1,0 +1,55 @@
+replicaCount: 1
+
+image:
+  repository: 172.16.16.2:30516/emqx/emqx
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+service:
+  ## Service type
+  ##
+  type: NodePort
+
+resources: 
+  limits:
+    cpu: 300m
+    memory: 300Mi
+  requests:
+    cpu: 300m
+    memory: 300Mi
+
+
+ingress:
+  ## ingress for EMQX Dashboard
+  dashboard:
+    enabled: true
+    ingressClassName: traefik
+    annotations: 
+      kubernetes.io/ingress.class: traefik
+    path: /
+    pathType: ImplementationSpecific
+    hosts:
+    - emqxconsole.tavanasys.app
+    tls: []
+  ## ingress for MQTT
+  mqtt:
+    enabled: true
+    ingressClassName: traefik
+    annotations: 
+      kubernetes.io/ingress.class: traefik
+    path: /
+    pathType: ImplementationSpecific
+    hosts:
+    - mqtt.tavanasys.app
+    tls: []
+  ws:
+    enabled: true
+    ingressClassName: traefik
+    annotations: 
+      kubernetes.io/ingress.class: traefik
+    path: /mqtt
+    pathType: ImplementationSpecific
+    hosts:
+      - emqx.tavanasys.app
+    tls: []  

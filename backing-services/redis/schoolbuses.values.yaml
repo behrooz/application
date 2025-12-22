@@ -1,0 +1,24 @@
+global:
+  storageClass: "efs-sc"
+  redis:
+    password: ""
+
+auth:  
+  persistence:
+    storageClass: "efs-sc"
+    
+  service:   
+    type: ClusterIP
+
+# replica:
+#   serviceAccount:    
+#     create: true
+#     name: "redisservcieaccount"
+#     automountServiceAccountToken: true    
+#     annotations: {}
+
+#   persistence:
+#     enabled: true
+#     path: /data    
+#     storageClass: "efs-sc"  
+#     size: 2Gi  

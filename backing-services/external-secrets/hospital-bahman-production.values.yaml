@@ -1,0 +1,21 @@
+image:
+  repository: 172.16.16.1:30516/external-secrets/external-secrets
+  pullPolicy: IfNotPresent  
+  tag: "v0.9.20"
+
+certController:
+  image:
+    repository: 172.16.16.1:30516/external-secrets/external-secrets
+    pullPolicy: IfNotPresent  
+    tag: "v0.9.20"
+
+webhook:
+  image:
+    repository: 172.16.16.1:30516/external-secrets/external-secrets
+    pullPolicy: IfNotPresent  
+    tag: "v0.9.20"
+
+global:
+  nodeSelector: 
+    node.name: node-01
+  tolerations: []

@@ -1,0 +1,19 @@
+image:
+  registry: 172.16.16.1:30516
+  repository: bitnami/mongodb
+  tag: 8.0.3-debian-12-r0
+  debug: true
+  
+auth:
+  enabled: true  
+  rootUser: root  
+  rootPassword: "Auction12"
+
+serviceAccount:  
+  create: false
+
+service:  
+  nameOverride: ""  
+  type: NodePort
+  ports:
+    mongodb: 27018

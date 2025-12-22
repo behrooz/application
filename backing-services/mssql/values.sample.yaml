@@ -1,0 +1,32 @@
+auth:
+  rootPassword: yJHSYfYHD5
+  username: demouser
+  password: bQ7B71VUdz
+
+###
+##### Backup
+backup:
+  enabled: true
+  databases: ["DemoData", "my_database"]
+  cronjob:
+    # every hour
+    schedule: "0 * * * *"
+  persistence:
+    enabled: true
+##### Monitoring
+metrics:
+  ## @param metrics.enabled Start a side-car prometheus exporter
+  ##
+  enabled: true
+  serviceMonitor:
+    # !! Make it false if you don't have Prometheus operator, specifically CRD servicemonitor
+    enabled: true
+    # !! namespace wheren prometheus operator is running , where its servicemonitor resources deployed
+    namespace: monitoring
+    labels:
+      ### i.e k -n monitoring get servicemonitor -L release
+      release:  monitoring-service
+
+ingress:
+  enabled: true
+  host: db1.labs.k8s.tn

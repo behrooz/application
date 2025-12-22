@@ -1,0 +1,71 @@
+configFiles:
+ config.json: |-
+   {
+     "storage": { "rootDirectory": "/var/lib/registry" },
+     "http": {
+       "address": "0.0.0.0",
+       "port": "5000",
+       "auth": { "htpasswd": { "path": "/secret/htpasswd" } },
+       "accessControl": {
+        "repositories": {
+          "**": {
+            "policies": [{
+              "users": ["user"],
+              "actions": ["read"]
+            }],
+            "defaultPolicy": ["read"],
+            "anonymousPolicy": ["read"]
+          }
+        },
+        "adminPolicy": {
+          "users": ["admin"],
+          "actions": ["read", "create", "update", "delete"]
+        }
+      }
+     },
+     "log": { "level": "debug" }
+      "extensions": {
+        "ui": {
+          "enable": true
+        }
+      }     
+   }
+
+service:
+  type: NodePort
+  port: 5000
+  nodePort: 30516  # Set to a specific port if type is NodePort
+  # Annotations to add to the service
+  annotations: {}
+  # Set to a static IP if a static IP is desired, only works when
+  # type: ClusterIP
+  clusterIP: null
+
+persistence: true
+# PVC data, only used if persistence is 'true'
+pvc:
+  # Make the chart create the PVC, this option is used with storageClasses that
+  # can create volumes dynamically, if that is not the case is better to do it
+  # manually and set create to false
+  create: true
+  # Name of the PVC to use or create if persistence is enabled, if not set the
+  # value '$CHART_RELEASE-pvc' is used
+  name: null
+  # Volume access mode, if using more than one replica we need
+  accessMode: "ReadWriteOnce"
+  # Size of the volume requested
+  storage: 100Gi
+  # Name of the storage class to use if it is different than the default one
+  storageClassName: null
+
+mountSecret: true
+# If secretFiles does not exist the user is in charge of managing it, again, if
+# you want to manage it the value has to be added empty to avoid using this one
+secretFiles:
+  # Example htpasswd with 'admin:admin' & 'user:user' user:pass pairs
+  htpasswd: |-
+    admin:$2y$05$vmiurPmJvHylk78HHFWuruFFVePlit9rZWGA/FbZfTEmNRneGJtha
+    user:$2y$05$L86zqQDfH5y445dcMlwu6uHv.oXFgT6AiJCwpv3ehr7idc0rI3S2G
+
+nodeSelector:
+  node.name: node-01

@@ -1,0 +1,6 @@
+# https://github.com/artifacthub/hub/blob/master/docs/metadata/artifacthub-repo.yml
+
+repositoryID: d21186d5-1cfe-4ed7-b9ad-7ff8a63c8def
+owners:
+- name: xrow
+  email: bjoern@xrow.de

@@ -1,0 +1,28 @@
+controller:
+  serviceAccount:
+    create: true
+    name: efs-csi-controller-sa        
+
+node:
+  # Specifies whether a service account should be created
+  serviceAccount:
+    create: true
+    name: efs-csi-node-sa
+    annotations:
+    ## Enable if EKS IAM for SA is used
+      eks.amazonaws.com/role-arn: arn:aws:iam::889565812003:role/schoolbuses_Cluster_IAM
+
+storageClasses:
+- name: efs-sc
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
+  mountOptions:
+  - tls
+  parameters:
+    provisioningMode: efs-ap
+    fileSystemId: fs-08694c721b539abe2
+    directoryPerms: "700"
+    gidRangeStart: "1000"
+    gidRangeEnd: "2000"
+  reclaimPolicy: Delete
+  volumeBindingMode: Immediate

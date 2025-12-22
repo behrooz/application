@@ -1,0 +1,14 @@
+replicaCount: 2
+
+clusterName: schoolbuses
+
+# cluster contains configurations specific to the kubernetes cluster
+cluster:
+  # Cluster DNS domain (required for requesting TLS certificates)
+  dnsDomain: alpharoute.dev
+
+serviceAccount:
+  name: aws-load-balancer-aws-load-balancer-controller
+  create: true
+  annotations:    
+    eks.amazonaws.com/role-arn: "arn:aws:iam::889565812003:role/schoolbuses_Cluster_IAM"

@@ -1,0 +1,17 @@
+auth:
+  username: admin
+  password: "admin"
+  securePassword: true
+  existingPasswordSecret: ""
+
+serviceAccount:  
+  create: false
+  name: ""
+  namespace: "default"
+  awsRoleArn: ""
+  owner: ""
+  automountServiceAccountToken: true  
+  annotations: {} 
+
+service:  
+  type: LoadBalancer

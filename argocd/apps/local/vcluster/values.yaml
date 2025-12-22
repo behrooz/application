@@ -1,0 +1,12 @@
+applications:
+  - name: vcluster-username
+    namespace: vcluster-username
+    path: vcluster-0.28.0
+    cluster: in-cluster
+    repoURL: http://192.168.1.10:3000/admin/applications
+
+  - name: vcluster-behrooz
+    namespace: vcluster-behrooz
+    path: vcluster-0.28.0
+    cluster: in-cluster
+    repoURL: http://192.168.1.10:3000/admin/applications

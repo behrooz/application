@@ -1,0 +1,32 @@
+image:
+  repository: 172.16.16.2:30516/osrm/osrm-backend
+  tag: v5.22.0
+  pullPolicy: IfNotPresent
+  
+map:
+  enabled: true
+
+  # Profile to be used for routing (one of "car", "bicycle", "foot")
+  profile: car
+  source: http
+  http:    
+    version: ""
+    uri: https://blog.tavanasys.app/iran-latest.osm.pbf
+
+resources:
+  requests:
+    cpu: 1000m
+    memory: 1200Mi
+  limits:
+    cpu: 1000m
+    memory: 1200Mi
+
+ingress:
+  enabled: false  
+  annotations:
+    kubernetes.io/ingress.class: traefik    
+  hosts:
+    - host: osm.tavanasys.app
+
+nodeSelector: 
+  node.name: worker-1

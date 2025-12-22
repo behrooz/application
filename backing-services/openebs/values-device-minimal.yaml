@@ -1,0 +1,158 @@
+# OpenEBS 4.x Minimal Configuration with Custom Registry
+# NOTE: OpenEBS 4.x does NOT have "device" storage class
+# The closest alternatives are:
+# - lvm-localpv (uses LVM, can use raw devices) - THIS IS BLOCK STORAGE
+# - rawfile-localpv (uses raw files, closest to device)
+
+# ============================================
+# CHANGE THIS TO YOUR REGISTRY
+# ============================================
+# Examples:
+#   - "172.16.16.1:30516" (private registry with port)
+#   - "registry.example.com" (private registry)
+#   - "docker.io" (default Docker Hub)
+# ============================================
+MY_REGISTRY: "172.16.16.1:30516"  # CHANGE THIS!
+
+openebs-crds:
+  csi:
+    volumeSnapshots:
+      enabled: false
+      keep: false
+
+# LocalPV Provisioner
+localpv-provisioner:
+  rbac:
+    create: true
+  global:
+    imageRegistry: "172.16.16.1:30516"  # Change to your registry
+  localpv:
+    image:
+      registry: "172.16.16.1:30516"  # Change to your registry
+      repository: openebs/provisioner-localpv
+      tag: 4.4.0
+
+# Disable ZFS
+zfs-localpv:
+  crds:
+    zfsLocalPv:
+      enabled: false
+    csi:
+      volumeSnapshots:
+        enabled: false
+
+# Enable LVM (BLOCK STORAGE - uses raw block devices)
+# This is the closest to "device" storage class
+lvm-localpv:
+  crds:
+    lvmLocalPv:
+      enabled: true
+    csi:
+      volumeSnapshots:
+        enabled: false
+  # LVM Plugin Image (main driver) - THIS IS THE BLOCK STORAGE DRIVER
+  # NOTE: Registry must end with '/' for LVM!
+  lvmPlugin:
+    image:
+      registry: "172.16.16.1:30516/"  # Change to your registry (MUST end with /)
+      repository: openebs/lvm-driver
+      tag: 1.8.0
+      pullPolicy: IfNotPresent
+  # CSI Sidecar Images (Kubernetes official images - usually keep as k8s registry)
+  lvmNode:
+    driverRegistrar:
+      image:
+        registry: "registry.k8s.io/"  # Keep as k8s registry (or change if mirrored)
+        repository: sig-storage/csi-node-driver-registrar
+        tag: v2.13.0
+        pullPolicy: IfNotPresent
+  lvmController:
+    resizer:
+      image:
+        registry: "registry.k8s.io/"  # Keep as k8s registry (or change if mirrored)
+        repository: sig-storage/csi-resizer
+        tag: v1.11.2
+        pullPolicy: IfNotPresent
+    snapshotter:
+      image:
+        registry: "registry.k8s.io/"  # Keep as k8s registry (or change if mirrored)
+        repository: sig-storage/csi-snapshotter
+        tag: v7.0.0
+        pullPolicy: IfNotPresent
+    snapshotController:
+      image:
+        registry: "registry.k8s.io/"  # Keep as k8s registry (or change if mirrored)
+        repository: sig-storage/snapshot-controller
+        tag: v7.0.0
+        pullPolicy: IfNotPresent
+    provisioner:
+      image:
+        registry: "registry.k8s.io/"  # Keep as k8s registry (or change if mirrored)
+        repository: sig-storage/csi-provisioner
+        tag: v5.2.0
+        pullPolicy: IfNotPresent
+    attacher:
+      image:
+        registry: "registry.k8s.io/"  # Keep as k8s registry (or change if mirrored)
+        repository: sig-storage/csi-attacher
+        tag: v4.8.1
+        pullPolicy: IfNotPresent
+
+# Enable rawfile (alternative to device)
+rawfile-localpv:
+  crds:
+    csi:
+      volumeSnapshots:
+        enabled: false
+  global:
+    imageRegistry: "172.16.16.1:30516"  # Change to your registry
+    k8sImageRegistry: "registry.k8s.io"  # Keep as k8s registry (or change if mirrored)
+    imagePullPolicy: IfNotPresent
+  image:
+    registry: "172.16.16.1:30516"  # Change to your registry (empty = uses global.imageRegistry)
+    repository: openebs/rawfile-localpv
+    tag: v0.12.0
+    pullPolicy: IfNotPresent
+
+# Disable Mayastor (replicated storage)
+mayastor:
+  enabled: false
+  csi:
+    node:
+      initContainers:
+        enabled: false
+  etcd:
+    clusterDomain: cluster.local
+  localpv-provisioner:
+    enabled: false
+  crds:
+    enabled: false
+  loki:
+    enabled: false
+  alloy:
+    enabled: false
+
+# Disable pre-upgrade hook
+preUpgradeHook:
+  enabled: false
+
+# Disable all engines except LVM and rawfile
+engines:
+  local:
+    lvm:
+      enabled: true   # Enable LVM (BLOCK STORAGE - uses raw devices)
+    zfs:
+      enabled: false  # Disable ZFS
+    rawfile:
+      enabled: true   # Enable rawfile (closest to device)
+  replicated:
+    mayastor:
+      enabled: false  # Disable Mayastor
+
+# Disable Loki (logging)
+loki:
+  enabled: false
+
+# Disable Alloy (monitoring)
+alloy:
+  enabled: false

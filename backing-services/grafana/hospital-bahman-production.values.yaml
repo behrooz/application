@@ -1,0 +1,18 @@
+image:
+  registry: 172.16.16.1:30516
+  repository: bitnami/grafana
+  tag: 10.2.3-debian-11-r0
+    
+volumePermissions:  
+  enabled: false  
+  image:
+    registry: 172.16.16.1:30516
+    repository: bitnami/os-shell
+    tag: 11-debian-11-r92
+
+admin:  
+  user: "admin"  
+  password: "Tavana123$"
+
+service:  
+  type: NodePort

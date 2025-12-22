@@ -1,0 +1,25 @@
+global:
+  redis:
+    password: "secret123"
+
+auth:    
+  service:   
+    type: ClusterIP
+  enabled: true  
+  sentinel: true    
+  password: "secret123"
+
+architecture: standalone
+
+# replica:
+#   serviceAccount:    
+#     create: true
+#     name: "redisservcieaccount"
+#     automountServiceAccountToken: true    
+#     annotations: {}
+
+#   persistence:
+#     enabled: true
+#     path: /data    
+#     storageClass: "efs-sc"  
+#     size: 2Gi  

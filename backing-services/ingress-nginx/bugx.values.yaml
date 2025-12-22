@@ -1,0 +1,16 @@
+controller:
+  name: controller
+  enableAnnotationValidations: false
+  image:
+    ## Keep false as default for now!
+    chroot: false
+    registry: localhost:30516
+    image: ingress-nginx/controller
+  admissionWebhooks:
+    patch:
+      image:
+        registry: localhost:30516
+        image: ingress-nginx/kube-webhook-certgen        
+        tag: v1.4.4
+        digest: ""
+        pullPolicy: IfNotPresent

@@ -1,0 +1,10 @@
+---
+
+global:
+  storageClass: "openebs-kernel-nfs"
+
+auth:
+  database: test
+  rootPassword: 'yourStrong(#)Password'
+  username: test
+  password: 'yourStrong(#)Password'
