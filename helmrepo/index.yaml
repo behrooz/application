@@ -39,6 +39,6 @@ entries:
     sources:
     - https://github.com/bitnami/charts/tree/main/bitnami/mysql
     urls:
-    - https://git.bugx.ir/gitea_admin/application/raw/branch/main/helmrepo/mysql-9.16.1.tgz
+    - https://github.com/behrooz/application/raw/branch/main/helmrepo/mysql-9.16.1.tgz
     version: 9.16.1
 generated: "2025-11-14T15:45:07.305379375+03:30"
