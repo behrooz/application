@@ -885,7 +885,7 @@ deploy:
   # MetricsServer holds dedicated metrics server configuration.
   metricsServer:
     # Enabled defines if metrics server should be enabled.
-    enabled: false
+    enabled: true
 
 # Integrations holds config for vCluster integrations with other operators or tools running on the host cluster
 integrations:
