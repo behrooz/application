@@ -1,6 +1,6 @@
 image:
   registry: localhost:30516
-  repository: bitnami/mongodb
+  repository: bitnamilegacy/mongodb
   tag: latest
 
 replicaCount: 1
@@ -9,7 +9,7 @@ metrics:
   enabled: false  
   image:
     registry: localhost:30516
-    repository: bitnami/mongodb-exporter
+    repository: bitnamilegacy/mongodb-exporter
     tag: latest
     pullPolicy: IfNotPresent
 
