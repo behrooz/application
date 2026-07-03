@@ -14,7 +14,7 @@
 ## @param global.namespaceOverride Override the namespace for resource deployed by the chart, but can itself be overridden by the local namespaceOverride
 ##
 global:
-  imageRegistry: "bitnami"
+  imageRegistry: "docker.io"
   ## E.g.
   ## imagePullSecrets:
   ##   - myRegistryKeySecretName
