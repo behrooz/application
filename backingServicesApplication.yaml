@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: backing-services
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: kube-system
+    server: https://kubernetes.default.svc
+  sources:
+    - repoURL: https://github.com/behrooz/application.git
+      targetRevision: HEAD
+      path: backing-services/mongodb
+      helm:
+        valueFiles:
+          - bugx.values.yaml
+    - repoURL: https://github.com/behrooz/application.git
+      targetRevision: HEAD
+      path: backing-services/zot
+      helm:
+        valueFiles:
+          - bugx.values.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
