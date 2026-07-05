@@ -1,0 +1,90 @@
+# Default values for vclusterfront
+replicaCount: 1
+
+image:
+  repository: 188.132.232.168:30724/front
+  pullPolicy: Always
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 80
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations: 
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: bugx.ir
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: bugx-tls
+      hosts:
+        - bugx.ir
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# API Configuration
+# These values are used as build arguments when building the Docker image
+# IMPORTANT: Vite requires environment variables at BUILD TIME, not runtime
+# You must build the Docker image with these values using build args
+apiConfig:
+  # Main API base URL (cluster management API)
+  baseUrl: "http://apibugx.ir"
+  # Vault/Secrets API base URL
+  vaultApiUrl: "http://vaultbugx.ir/api/v1"
+
+# Build job to build image with correct URLs (optional)
+buildJob:
+  enabled: false
+
+# Note: ConfigMap is not used for Vite apps as env vars must be at build time
+# Build your image with: docker build --build-arg VITE_API_BASE_URL=... --build-arg VITE_VAULT_API_URL=...
+

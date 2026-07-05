@@ -1,0 +1,17 @@
+apiVersion: v2
+name: vclusterapi
+description: A Helm chart for vclusterapi - Kubernetes cluster management API
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords:
+  - kubernetes
+  - vcluster
+  - api
+  - management
+maintainers:
+  - name: vclusterapi-team
+home: https://github.com/yourorg/vclusterapi
+sources:
+  - https://github.com/yourorg/vclusterapi
+

@@ -1,0 +1,120 @@
+# Default values for simple-vault
+# This is a YAML-formatted file.
+
+# Global settings
+global:
+  imageRegistry: ""
+  imagePullSecrets: []
+
+# API Service Configuration
+api:
+  enabled: true
+  image:
+    repository: 188.132.232.168:30724/simple-vault-api
+    tag: latest
+    pullPolicy: IfNotPresent
+  
+  replicaCount: 1
+  
+  service:
+    type: ClusterIP
+    port: 8080
+    targetPort: 8080
+  
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  
+  livenessProbe: {}
+  
+  readinessProbe: {}
+  
+  # Environment variables
+  env:
+    PORT: "8080"
+    # MongoDB configuration - use MONGODB_URI or individual components
+    MONGODB_URI: ""  # If set, this takes precedence (e.g., "mongodb://root:secret123@mongodb.mongodb.svc:27017/")
+    DB_HOST: ""
+    DB_PORT: ""
+    DB_USER: ""
+    DB_PASSWORD: ""
+    DB_NAME: "vault"
+    # Auth service URL
+    AUTH_SERVICE_URL: "http://authservice:8083"
+  
+  # Node selector, tolerations, and affinity
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+# MongoDB Configuration (optional - use external MongoDB if enabled: false)
+mongodb:
+  enabled: false
+  image:
+    repository: mongo
+    tag: "7"
+    pullPolicy: IfNotPresent
+  
+  auth:
+    enabled: true
+    rootUsername: vault
+    rootPassword: vault
+    database: vault
+  
+  persistence:
+    enabled: true
+    size: 10Gi
+    storageClass: ""
+  
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+    requests:
+      cpu: 500m
+      memory: 1Gi
+  
+  service:
+    type: ClusterIP
+    port: 27017
+
+# Ingress Configuration
+ingress:
+  enabled: false
+  className: "nginx"
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: simple-vault.local
+      paths:
+        - path: /api
+          pathType: Prefix
+          service: api
+  tls: []
+  #  - secretName: simple-vault-tls
+  #    hosts:
+  #      - simple-vault.local
+
+# Service Account
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+# Security Context (container-level)
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  # Note: fsGroup belongs in podSecurityContext, not here
+
+# Pod Security Context (pod-level)
+podSecurityContext:
+  fsGroup: 1000
+  runAsNonRoot: true
+  runAsUser: 1000
+

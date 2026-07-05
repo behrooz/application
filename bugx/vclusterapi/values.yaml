@@ -1,0 +1,271 @@
+# Default values for vclusterapi
+replicaCount: 2
+
+image:
+  repository: vclusterapi
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: NodePort
+  port: 8082
+  targetPort: 8082
+  annotations: {}
+
+# Prometheus Metrics Configuration
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    interval: 30s
+    scrapeTimeout: 10s
+    labels: {}
+    annotations: {}
+    relabelings: []
+    metricRelabelings: []
+
+ingress:
+  enabled: false
+  className: "nginx"
+  annotations:
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: vclusterapi.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+  #  - secretName: vclusterapi-tls
+  #    hosts:
+  #      - vclusterapi.example.com
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# MongoDB Configuration
+mongodb:
+  enabled: false  # Set to true if you want to deploy MongoDB as part of this chart
+  connectionString: "mongodb://root:secret123@212.64.215.155:32169/"
+  database: "vcluster"
+  # If using external MongoDB, set connectionString above
+  # If using internal MongoDB, set enabled: true and configure below
+  # If using external MongoDB, set connectionString above
+  # If using internal MongoDB, set enabled: true and configure below
+  host: "212.64.215.155"
+  port: 32169
+  username: "root"
+  password: "secret123"
+  # Use secret for password in production
+  existingSecret: ""
+  secretKey: "mongodb-password"
+
+# Auth Service Configuration
+authService:
+  url: "http://localhost:8083"
+  # Can be overridden via environment variable
+
+# ArgoCD Configuration
+# Note: Environment variables are defined in env:[] section below
+# If existingSecret is set, it will override the ARGOCD_TOKEN from env:[]
+argocd:
+  server: "argocd.bugx.ir:443"
+  token: ""  # Deprecated: Use env[] or existingSecret instead
+  insecure: false
+  plainText: false
+  existingSecret: ""  # Name of secret containing ARGOCD_TOKEN (recommended)
+  secretKey: "argocd-token"
+
+# Git Repository Configuration
+git:
+  defaultRepoUrl: "https://github.com/behrooz/application"
+  defaultRepoPath: "vcluster-0.28.0"
+
+# Domain Configuration
+domain:
+  baseDomain: "bugx.ir"
+  ingressPattern: "{namespace}-{namespace}-{servicename}.{baseDomain}"
+
+# Environment Variables
+env:
+  # Database Configuration
+  - name: MONGODB_CONNECTION_STRING
+    value: "mongodb://root:secret123@212.64.215.155:32169/"
+  - name: MONGODB_DATABASE
+    value: "vcluster"
+  
+  # Auth Service Configuration
+  - name: AUTH_SERVICE_URL
+    value: "http://localhost:8083"
+  
+  # ArgoCD Configuration
+  - name: ARGOCD_SERVER
+    value: "argocd.bugx.ir:443"
+  - name: ARGOCD_TOKEN
+    value: ""  # Should be set via existingSecret
+  - name: ARGOCD_INSECURE
+    value: "false"
+  - name: ARGOCD_PLAIN_TEXT
+    value: "false"
+  
+  # Git Repository Configuration
+  - name: DEFAULT_GIT_REPO_URL
+    value: "https://github.com/behrooz/application"
+  - name: DEFAULT_GIT_REPO_PATH
+    value: "vcluster-0.28.0"
+  
+  # Domain Configuration
+  - name: BASE_DOMAIN
+    value: "bugx.ir"
+  - name: INGRESS_DOMAIN_PATTERN
+    value: "{namespace}-{namespace}-{servicename}.{baseDomain}"
+  
+  # Tunnel Configuration
+  - name: TUNNEL_BASE_DOMAIN
+    value: "bugx.ir"  # Uses BASE_DOMAIN if not set
+  - name: TUNNEL_PORT_RANGE_MIN
+    value: "30000"
+  - name: TUNNEL_PORT_RANGE_MAX
+    value: "31000"
+  - name: TUNNEL_PROXY_PORT
+    value: "8080"
+  
+  # Storage Configuration
+  - name: DEFAULT_STORAGE_CLASS
+    value: "local-path"
+  - name: DEFAULT_STORAGE_SIZE
+    value: "5Gi"
+  
+  # Host Cluster Configuration
+  - name: HOST_CLUSTER_NAME
+    value: "host-cluster-1"
+  
+  # CORS Configuration
+  - name: CORS_ALLOWED_ORIGINS
+    value: "*"
+  - name: CORS_DEBUG
+    value: "false"  # Set to "true" to enable verbose CORS logging
+  
+  # Server Configuration
+  - name: SERVER_PORT
+    value: "8082"
+  - name: SERVER_HOST
+    value: "0.0.0.0"
+  
+  # Additional custom environment variables can be added below
+  # - name: CUSTOM_VAR
+  #   value: "custom-value"
+
+# ConfigMap for additional configuration
+configMap:
+  enabled: false
+  data: {}
+
+# Secrets for sensitive data
+secrets:
+  enabled: true
+  mongodbPassword: "secret123"
+  # Additional secrets can be added here
+
+# Liveness and Readiness Probes
+livenessProbe:
+  httpGet:
+    path: /health
+    port: http
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /health
+    port: http
+  initialDelaySeconds: 10
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+# Health check endpoint (if not exists, probes will fail)
+# You may need to add a /health endpoint to your application
+
+# Additional volumes
+volumes: []
+  # - name: config
+  #   configMap:
+  #     name: vclusterapi-config
+
+volumeMounts: []
+  # - name: config
+  #   mountPath: /etc/config
+  #   readOnly: true
+
+# Init containers
+initContainers: []
+
+# Sidecar containers
+sidecars: []
+
+# Pod Disruption Budget
+podDisruptionBudget:
+  enabled: false
+  minAvailable: 1
+  # maxUnavailable: 1
+
+# Network Policy
+networkPolicy:
+  enabled: false
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress: []
+  egress: []
+    # - to:
+    #   - namespaceSelector:
+    #       matchLabels:
+    #         name: auth-service
+    #   ports:
+    #   - protocol: TCP
+    #     port: 8083
+
