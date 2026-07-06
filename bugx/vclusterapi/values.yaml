@@ -2,7 +2,7 @@
 replicaCount: 1
 
 image:
-  repository: vclusterapi
+  repository:  188.132.232.168:30836/vclusterapi
   pullPolicy: IfNotPresent
   tag: "25"
 
