@@ -2,9 +2,9 @@
 replicaCount: 1
 
 image:
-  repository: authservice
+  repository: 188.132.232.168:30836/authservice
   pullPolicy: IfNotPresent
-  tag: "latest"
+  tag: "15"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -76,7 +76,7 @@ affinity: {}
 
 # MongoDB configuration
 mongodb:
-  connectionString: "mongodb://root:secret123@212.64.215.155:32169/"
+  connectionString: "mongodb://root:secret123@mongodb:27017/"
   database: "vcluster"
   collection: "users"
 

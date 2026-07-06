@@ -2,9 +2,9 @@
 replicaCount: 1
 
 image:
-  repository: 188.132.232.168:30724/front
+  repository: 188.132.232.168:30836/front
   pullPolicy: Always
-  tag: "latest"
+  tag: "20"
 
 imagePullSecrets: []
 nameOverride: ""
