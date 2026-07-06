@@ -4,7 +4,7 @@ replicaCount: 1
 image:
   repository: vclusterapi
   pullPolicy: IfNotPresent
-  tag: "latest"
+  tag: "25"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -87,14 +87,14 @@ affinity: {}
 # MongoDB Configuration
 mongodb:
   enabled: false  # Set to true if you want to deploy MongoDB as part of this chart
-  connectionString: "mongodb://root:secret123@212.64.215.155:32169/"
+  connectionString: "mongodb://root:secret123@mongodb:27017/"
   database: "vcluster"
   # If using external MongoDB, set connectionString above
   # If using internal MongoDB, set enabled: true and configure below
   # If using external MongoDB, set connectionString above
   # If using internal MongoDB, set enabled: true and configure below
-  host: "212.64.215.155"
-  port: 32169
+  host: "mongodb"
+  port: 27017
   username: "root"
   password: "secret123"
   # Use secret for password in production
@@ -131,7 +131,7 @@ domain:
 env:
   # Database Configuration
   - name: MONGODB_CONNECTION_STRING
-    value: "mongodb://root:secret123@212.64.215.155:32169/"
+    value: "mongodb://root:secret123@mongodb:27017"
   - name: MONGODB_DATABASE
     value: "vcluster"
   
