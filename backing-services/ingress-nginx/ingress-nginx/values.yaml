@@ -77,7 +77,7 @@ controller:
   # -- Optionally change this to ClusterFirstWithHostNet in case you have 'hostNetwork: true'.
   # By default, while using host network, name resolution uses the host's DNS. If you wish nginx-controller
   # to keep resolving names inside the k8s network, use ClusterFirstWithHostNet.
-  dnsPolicy: ClusterFirst
+  dnsPolicy: ClusterFirstWithHostNet
   # -- Instruct the kubelet to use the named RuntimeClass to run the pod
   runtimeClassName: ""
   # -- Bare-metal considerations via the host network https://kubernetes.github.io/ingress-nginx/deploy/baremetal/#via-the-host-network
@@ -104,12 +104,12 @@ controller:
   # -- Required for use with CNI based kubernetes installations (such as ones set up by kubeadm),
   # since CNI and hostport don't mix yet. Can be deprecated once https://github.com/kubernetes/kubernetes/issues/23920
   # is merged
-  hostNetwork: false
+  hostNetwork: true
   ## Use host ports 80 and 443
   ## Disabled by default
   hostPort:
     # -- Enable 'hostPort' or not
-    enabled: false
+    enabled: true
     ports:
       # -- 'hostPort' http port
       http: 80
@@ -223,7 +223,7 @@ controller:
   #         name: secret-resource
 
   # -- Use a `DaemonSet` or `Deployment`
-  kind: Deployment
+  kind: DaemonSet
   # -- Annotations to be added to the controller Deployment or DaemonSet
   ##
   annotations: {}
