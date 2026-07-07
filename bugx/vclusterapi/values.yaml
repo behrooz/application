@@ -47,7 +47,7 @@ metrics:
     metricRelabelings: []
 
 ingress:
-  enabled: false
+  enabled: true
   className: "nginx"
   annotations:
     # cert-manager.io/cluster-issuer: "letsencrypt-prod"
