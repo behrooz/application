@@ -84,21 +84,21 @@ mongodb:
 
 # Ingress Configuration
 ingress:
-  enabled: false
+  enabled: true
   className: "nginx"
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: simple-vault.local
+    - host: vault.bugx.ir
       paths:
-        - path: /api
+        - path: /
           pathType: Prefix
-          service: api
-  tls: []
-  #  - secretName: simple-vault-tls
-  #    hosts:
-  #      - simple-vault.local
+  tls: 
+   - secretName: simple-vault-tls
+     hosts: 
+       - vault.bugx.ir
 
 # Service Account
 serviceAccount:
