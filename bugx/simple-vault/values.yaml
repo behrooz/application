@@ -45,6 +45,7 @@ api:
     DB_NAME: "vault"
     # Auth service URL
     AUTH_SERVICE_URL: "http://authservice:8083"
+    VAULT_MASTER_KEY: "8j/yyGtjbV15J5tDzzDlXiaRflWacnxaLZ+wBdlZfKKE="
   
   # Node selector, tolerations, and affinity
   nodeSelector: {}
