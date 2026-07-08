@@ -76,7 +76,7 @@ affinity: {}
 
 # MongoDB configuration
 mongodb:
-  connectionString: "mongodb://root:secret123@mongodb:27017/"
+  connectionString: "mongodb://root:jPRoAlzMyY@mongodb:27017/"
   database: "vcluster"
   collection: "users"
 
