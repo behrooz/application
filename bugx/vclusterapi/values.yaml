@@ -54,14 +54,14 @@ ingress:
     kubernetes.io/ingress.class: cilium
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: vclusterapi.bugx.ir
+    - host: api.bugx.ir
       paths:
         - path: /
           pathType: Prefix
   tls: 
    - secretName: vclusterapi-tls
      hosts:
-       - vclusterapi.bugx.ir
+       - api.bugx.ir
 
 resources:
   limits:
