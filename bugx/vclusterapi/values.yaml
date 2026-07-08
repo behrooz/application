@@ -141,7 +141,7 @@ env:
   
   # ArgoCD Configuration
   - name: ARGOCD_SERVER
-    value: "argocd-server.argocd.svc:443"
+    value: "https://argocd.bugx.ir:443"
   - name: ARGOCD_TOKEN
     value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhcmdvY2QiLCJzdWIiOiJteXVzZXI6YXBpS2V5IiwibmJmIjoxNzgzNDk0ODY2LCJpYXQiOjE3ODM0OTQ4NjYsImp0aSI6ImYwNDViM2JlLTU3NzEtNGEzNi04YTI0LTcxN2JkYTRkZWJjOCJ9.RG1R-BXm33sRx20GJTUQumpdKMzFHj442gKoFVHDHpA"  # Should be set via existingSecret
   - name: ARGOCD_INSECURE
