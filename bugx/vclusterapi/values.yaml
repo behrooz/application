@@ -103,7 +103,7 @@ mongodb:
 
 # Auth Service Configuration
 authService:
-  url: "http://localhost:8083"
+  url: "http://auth-authservice:8083"
   # Can be overridden via environment variable
 
 # ArgoCD Configuration
@@ -137,7 +137,7 @@ env:
   
   # Auth Service Configuration
   - name: AUTH_SERVICE_URL
-    value: "http://localhost:8083"
+    value: "http://auth-authservice:8083"
   
   # ArgoCD Configuration
   - name: ARGOCD_SERVER
