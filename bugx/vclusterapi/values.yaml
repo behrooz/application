@@ -87,7 +87,7 @@ affinity: {}
 # MongoDB Configuration
 mongodb:
   enabled: false  # Set to true if you want to deploy MongoDB as part of this chart
-  connectionString: "mongodb://root:secret123@mongodb:27017/"
+  connectionString: "mongodb://root:jPRoAlzMyY@mongodb:27017/"
   database: "vcluster"
   # If using external MongoDB, set connectionString above
   # If using internal MongoDB, set enabled: true and configure below
@@ -96,7 +96,7 @@ mongodb:
   host: "mongodb"
   port: 27017
   username: "root"
-  password: "secret123"
+  password: "jPRoAlzMyY"
   # Use secret for password in production
   existingSecret: ""
   secretKey: "mongodb-password"
@@ -131,7 +131,7 @@ domain:
 env:
   # Database Configuration
   - name: MONGODB_CONNECTION_STRING
-    value: "mongodb://root:secret123@mongodb:27017"
+    value: "mongodb://root:jPRoAlzMyY@mongodb:27017"
   - name: MONGODB_DATABASE
     value: "vcluster"
   
@@ -205,7 +205,7 @@ configMap:
 # Secrets for sensitive data
 secrets:
   enabled: true
-  mongodbPassword: "secret123"
+  mongodbPassword: "jPRoAlzMyY"
   # Additional secrets can be added here
 
 # Liveness and Readiness Probes
