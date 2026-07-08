@@ -37,7 +37,7 @@ api:
   env:
     PORT: "8080"
     # MongoDB configuration - use MONGODB_URI or individual components
-    MONGODB_URI: ""  # If set, this takes precedence (e.g., "mongodb://root:secret123@mongodb.mongodb.svc:27017/")
+    MONGODB_URI: "mongodb://root:jPRoAlzMyY@mongodb.default.svc:27017/"  # If set, this takes precedence (e.g., "mongodb://root:secret123@mongodb.default.svc:27017/")
     DB_HOST: ""
     DB_PORT: ""
     DB_USER: ""
