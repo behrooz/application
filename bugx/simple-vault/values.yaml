@@ -44,7 +44,7 @@ api:
     DB_PASSWORD: ""
     DB_NAME: "vault"
     # Auth service URL
-    AUTH_SERVICE_URL: "http://authservice:8083"
+    AUTH_SERVICE_URL: "http://auth-authservice:8083"
     VAULT_MASTER_KEY: "Ntebem/GkBd2EY+smMVkDHeAlP4xsPMzJApDMzYBjpI="
   
   # Node selector, tolerations, and affinity
