@@ -1020,7 +1020,14 @@ rbac:
     # OverwriteRules will overwrite the role rules completely.
     overwriteRules: []
     # ExtraRules will add rules to the role.
-    extraRules: []
+    #extraRules: []
+    extraRules:
+      - apiGroups: ["admissionregistration.k8s.io"]
+        resources: ["validatingwebhookconfigurations", "mutatingwebhookconfigurations"]
+        verbs: ["list", "watch"]
+      - apiGroups: ["certificates.k8s.io"]
+        resources: ["certificatesigningrequests"]
+        verbs: ["list", "watch"]    
   
   # ClusterRole holds virtual cluster cluster role configuration
   clusterRole:
@@ -1067,6 +1074,9 @@ networking:
 
 # Policies to enforce for the virtual cluster deployment as well as within the virtual cluster.
 policies:
+  # PodSecurityStandard blocks privileged/hostPID/hostPath/hostNetwork pods from syncing to the host.
+  # baseline is enough to prevent tenants listing host processes/files.
+  podSecurityStandard: baseline
   # ResourceQuota specifies resource quota options.
   resourceQuota:
     # Enabled defines if the resource quota should be enabled. "auto" means that if limitRange is enabled,
