@@ -192,6 +192,11 @@ env:
     value: "8082"
   - name: SERVER_HOST
     value: "0.0.0.0"
+  - name: VITE_VAULT_API_URL
+    value: "https://vault.bugx.ir/api/v1"
+  - name: VAULT_SERVICE_URL
+    value: "https://vault.bugx.ir/"
+
   
   # Additional custom environment variables can be added below
   # - name: CUSTOM_VAR
