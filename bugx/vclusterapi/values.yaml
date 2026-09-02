@@ -4,7 +4,7 @@ replicaCount: 1
 image:
   repository:  188.132.232.168:30836/vclusterapi
   pullPolicy: IfNotPresent
-  tag: "25"
+  tag: "32"
 
 imagePullSecrets: []
 nameOverride: ""
